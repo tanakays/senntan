@@ -39,7 +39,7 @@ switch ($target) {
         echo "ターゲットが不正です。";
         exit;
 }
-b
+
 $obj = new stdClass();
 $obj->data = $ret;
 
