@@ -6,6 +6,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
 </head>
 <body>
+<h1 style="font-size:70px">鳥取県の各店舗の月別売上</h1>
 <h1 id="name1"></h1>
 <canvas id="myChart1" width="400" height="400"></canvas>
 <h1 id="name2"></h1>
@@ -27,7 +28,75 @@
 <h1 id="name10"></h1>
 <canvas id="myChart10" width="400" height="400"></canvas>
 
+<script type="text/javascript">/*グラフの位置変更*/
+var canvas;
+var ctx;
 
+function init() {
+   
+	    canvas1 = document.getElementById("name2"); 
+	    canvas2 = document.getElementById("myChart2");
+	    canvas1.style.position = "absolute";
+	    canvas1.style.left = "50%";
+	    canvas1.style.top = "170px";
+	    canvas2.style.position = "absolute";
+	    canvas2.style.left = "50%";
+	    canvas2.style.top = "270px";
+	    ctx = canvas2.getContext("2d");
+	    
+	    canvas3 = document.getElementById("name4"); 
+	    canvas4 = document.getElementById("myChart4");
+	    canvas3.style.position = "absolute";
+	    canvas3.style.left = "50%";
+	    canvas3.style.top = "670px";
+	    canvas4.style.position = "absolute";
+	    canvas4.style.left = "50%";
+	    canvas4.style.top = "770px";
+	    ctx = canvas4.getContext("2d");
+	    
+	    canvas5 = document.getElementById("name6"); 
+	    canvas6 = document.getElementById("myChart6");
+	    canvas5.style.position = "absolute";
+	    canvas5.style.left = "50%";
+	    canvas5.style.top = "1170px";
+	    canvas6.style.position = "absolute";
+	    canvas6.style.left = "50%";
+	    canvas6.style.top = "1270px";
+	    ctx = canvas6.getContext("2d");
+	    
+	    canvas7 = document.getElementById("name8"); 
+	    canvas8 = document.getElementById("myChart8");
+	    canvas7.style.position = "absolute";
+	    canvas7.style.left = "50%";
+	    canvas7.style.top = "1670px";
+	    canvas8.style.position = "absolute";
+	    canvas8.style.left = "50%";
+	    canvas8.style.top = "1770px";
+	    ctx = canvas8.getContext("2d");
+	    
+	    canvas9 = document.getElementById("name10"); 
+	    canvas10 = document.getElementById("myChart10");
+	    canvas9.style.position = "absolute";
+	    canvas9.style.left = "50%";
+	    canvas9.style.top = "2170px";
+	    canvas10.style.position = "absolute";
+	    canvas10.style.left = "50%";
+	    canvas10.style.top = "2270px";
+	    ctx = canvas10.getContext("2d");
+	    draw();
+
+}
+
+function draw() {
+    ctx.style = "#000000";
+    ctx.rect( 0, 0, 100, 100 );
+    ctx.stroke();
+}
+
+window.onload = function() {
+    init();
+};
+</script>
 
 <script>
 
@@ -47,7 +116,8 @@
 	    	}
 	    	if(name==res.data[i][0]){
 	   			if(res.data[i][1]=="2016"){
-      				zr_array.push(res.data[i][3])
+
+zr_array.push(res.data[i][3])
       			}else if(res.data[i][1]=="2017"){
       				zn_array.push(res.data[i][3])
       			}else{
