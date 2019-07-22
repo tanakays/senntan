@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/Shift-JIS; charset=utf-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+  <script src = "http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <script type="text/javascript"></script>
+ <style>
+ </style>
+</head>
+<body bgcolor="#808080">
+<h1 style="color:#ffffff;">中国地方各県の過去3年の総売上と生徒数(中高生)</h1>
+<div style="width:40%;  float:left; margin:10px;">
+    <canvas id="myChart" style="background-color:#ffffff; border-radius: 10px 10px 10px 10px; "></canvas>
+</div>
+<div style="width:40%;  float:left; margin:10px;">
+	<canvas id="myChart1" style="background-color:#ffffff; border-radius: 10px 10px 10px 10px;"></canvas>
+</div>
+</ul>
+</table>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"></script>
+　<script>
+  $.get('http://localhost/api.php?target=movie_type', {}, function(res) {
+    	 var Prefecture=[]
+    	 var Sales=[]
+		 var Student=['209922','320742','110683','459248','91080']	//生徒数
+    		for(var i=0;i<res.data.length;i++){
+    		  		Prefecture.push(res.data[i][0])		//県名
+    		  		Sales.push(res.data[i][1])		//総売上
+    		}
+    		var barChartData = {
+        			labels:Prefecture,
+    				datasets:[{
+        				type:'line',
+        				label:'生徒数(人)',
+        				data: Student,
+       	 				borderColor:"rgba(254,97,132,0.8)",
+        		    	pointBackgroundColor:"rgba(254,97,132,0.8)",
+        		    	fill:false,
+        				yAxisID:"y-axis-1",
+    					},
+    					{
+    			    	type: 'bar',
+        				label: '総売上(円)',
+        				data: Sales,
+        				borderColor : "rgba(54,164,235,0.8)",
+        				backgroundColor : "rgba(54,164,235,0.7)",
+        				yAxisID: "y-axis-2",
+    					},
+    				],
+        };
+		var complexChartOption = {
+		    responsive: true,
+		    scales: {
+        	yAxes: [{
+        	    id: "y-axis-1",
+        	    type: "linear", 
+        	    position: "left",
+        	    ticks: {
+            	    max: 500000,
+            	    min: 0,
+            	    stepSize: 100000
+           		},
+        	},{
+           		id: "y-axis-2",
+           		type: "linear", 
+           		position: "right",
+           		ticks: {
+           	    	max: 12000000,
+           	    	min: 0,
+           	    	stepSize: 2400000
+           		},
+           		gridLines: {
+           	    	drawOnChartArea: false, 
+           		},
+       		}],
+   			}
+    	}
+	    var ctx = document.getElementById("myChart").getContext("2d");
+	    var myChart = new Chart(ctx, {
+	        type: 'bar',
+	        data: barChartData,
+	        options: complexChartOption
+	    });
+    });
+</script>
+<script>
+	$.get('http://localhost/api.php?target=spots', {}, function(res) {
+    	 var Prefecture=[]
+    	 var Stores=[]
+    		for(var i=0;i<res.data.length;i++){
+    		  		Prefecture.push(res.data[i][0])	//県名
+    		  		Stores.push(res.data[i][1])	//店舗数
+    		}
+    		var barChartData = {
+        			labels: Prefecture,
+    				datasets:[
+    					{
+    			    	type: 'bar',
+        				label: '店舗数',
+        				data: Stores,
+        				borderColor : "rgba(54,164,235,0.8)",
+        				backgroundColor : "rgba(54,164,235,0.7)",
+        				yAxisID: "y-axis-2",
+    					},
+    				],
+        };
+		var complexChartOption = {
+		    responsive: true,
+		    scales: {
+        	yAxes: [{
+           		id: "y-axis-2",
+           		type: "linear", 
+           		position: "right",
+           		ticks: {
+           	    	max: 15,
+           	    	min: 0,
+           	    	stepSize: 3
+           		},
+           		gridLines: {
+           	    	drawOnChartArea: false, 
+           		},
+       		}],
+   			}
+    	}
+	    var ctx = document.getElementById("myChart1").getContext("2d");
+	    var myChart = new Chart(ctx, {
+	        type: 'bar',
+	        data: barChartData,
+	        options: complexChartOption
+	    });
+    });
+</script>
+</body>
+</html>
