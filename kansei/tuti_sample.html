@@ -1,0 +1,58 @@
+<!DOCTYPE html><!--作成者 土 岬-->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+</head>
+<body>
+<h1>中国地方内での各県の売上割合</h1>
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<script>
+    $.get('http://localhost/api.php?target=uriage', {}, function(res) {
+    	//各県名の配列
+	    var ken_array = [];
+	    for(key in res.data){
+      		ken_array.push(res.data[key][0])//resから取得した県名の値を配列に格納
+	    }
+	    
+	    //各県の売上の配列
+	    var uriage_array = [];
+	    for(key in res.data){
+	    	uriage_array.push(res.data[key][1])//resから取得した売上の値を配列に格納
+	    }
+	    var ctx = document.getElementById('myChart').getContext('2d');
+	    var myChart = new Chart(ctx, {
+	        type: 'pie',//円グラフ
+	        data: {
+	            labels: ken_array,//各県名の配列を設定
+	            datasets: [{
+	                label: '色のグラフ',
+	                data: uriage_array,//各県の売上の配列を設定
+	                backgroundColor: [
+			//色を段階的に表示
+	                    'rgba(255, 99, 132, 0.9)',
+	                    'rgba(255, 99, 132, 0.7)',
+	                    'rgba(255, 99, 132, 0.5)',
+	                    'rgba(255, 99, 132, 0.3)',
+	                    'rgba(255, 99, 132, 0.1)'
+	                ],
+	                borderColor: [
+	                    'rgba(128, 128, 128, 1)',
+	                    'rgba(128, 128, 128, 1)',
+	                    'rgba(128, 128, 128, 1)',
+	                    'rgba(128, 128, 128, 1)',
+	                    'rgba(128, 128, 128, 1)'
+	                ],
+	                borderWidth: 1
+	            }]
+	        },
+			options: {
+			    responsive: false,
+			}
+	 	});
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="gurahu.js"></script><!--使用したJavaScript-->
+</head>
+<body>
+    <h1>県ごとの直営店舗数・総売り上げ額グラフ</h1>
+    <canvas id="myChart" width="500" height="500"></canvas>
+    
+    <script>
+        window.onload = function(){//ロード時にデフォルトデータを表示
+            show_chart(document.getElementById('myChart').getContext('2d'));
+            getData('kotosi');
+        }   
+        
+        function selectboxChange(){ //セレクトボックスから値が変更された時の処理
+            var obj = document.getElementById("flug");
+            var flug = obj.value;
+            console.log("flug=" + flug);
+            switch(flug){
+                case 'otodosi': 
+                    getData(flug);
+                    break;
+                case 'kyonen':
+                    getData(flug);
+                    break;
+                case 'kotosi':
+                    getData(flug);
+                    break;
+                default:
+                    console.log("error");
+            }
+        }
+
+        function getData(nensuu){ //apiでデータベースから値を持ってくる処理
+            var data;
+            console.log("nensuu=" + nensuu);
+            switch(nensuu){
+                case 'otodosi':
+                    $.get('http://localhost/api.php?target=otodosi', {}, function(res) {
+                        console.log(res);
+                        data = res.data;
+                        update_chart(data);
+                    })
+                    break;
+                case 'kyonen':
+                    $.get('http://localhost/api.php?target=kyonen', {}, function(res) {
+                        console.log(res);
+                        data = res.data;
+                        update_chart(data);
+                    })
+                    break;
+                case 'kotosi':
+                    $.get('http://localhost/api.php?target=kotosi', {}, function(res) {
+                        console.log(res);
+                        data = res.data;
+                        update_chart(data);
+                    })
+                    break;
+                default:
+                    console.log("dataerror");
+            }
+            
+           
+        }
+          </script>
+    <select name="nensuu" id="flug" onchange="selectboxChange();"> <!--セレクトボックス-->
+        <option  value="otodosi">2016年</option>
+        <option  value="kyonen">2017年</option>
+        <option  value="kotosi" selected >2018年</option>
+    </select>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+</head>
+<body>
+<h1 style="font-size:70px">鳥取県の各店舗の月別売上</h1>
+<h1 id="name1"></h1>
+<canvas id="myChart1" width="400" height="400"></canvas>
+<h1 id="name2"></h1>
+<canvas id="myChart2" width="400" height="400"></canvas>
+<h1 id="name3"></h1>
+<canvas id="myChart3" width="400" height="400"></canvas>
+<h1 id="name4"></h1>
+<canvas id="myChart4" width="400" height="400"></canvas>
+<h1 id="name5"></h1>
+<canvas id="myChart5" width="400" height="400"></canvas>
+<h1 id="name6"></h1>
+<canvas id="myChart6" width="400" height="400"></canvas>
+<h1 id="name7"></h1>
+<canvas id="myChart7" width="400" height="400"></canvas>
+<h1 id="name8"></h1>
+<canvas id="myChart8" width="400" height="400"></canvas>
+<h1 id="name9"></h1>
+<canvas id="myChart9" width="400" height="400"></canvas>
+<h1 id="name10"></h1>
+<canvas id="myChart10" width="400" height="400"></canvas>
+
+<script type="text/javascript">/*グラフの位置変更*/
+var canvas;
+var ctx;
+function init() {
+   
+	    canvas1 = document.getElementById("name2"); 
+	    canvas2 = document.getElementById("myChart2");
+	    canvas1.style.position = "absolute";
+	    canvas1.style.left = "50%";
+	    canvas1.style.top = "170px";
+	    canvas2.style.position = "absolute";
+	    canvas2.style.left = "50%";
+	    canvas2.style.top = "270px";
+	    ctx = canvas2.getContext("2d");
+	    
+	    canvas3 = document.getElementById("name4"); 
+	    canvas4 = document.getElementById("myChart4");
+	    canvas3.style.position = "absolute";
+	    canvas3.style.left = "50%";
+	    canvas3.style.top = "670px";
+	    canvas4.style.position = "absolute";
+	    canvas4.style.left = "50%";
+	    canvas4.style.top = "770px";
+	    ctx = canvas4.getContext("2d");
+	    
+	    canvas5 = document.getElementById("name6"); 
+	    canvas6 = document.getElementById("myChart6");
+	    canvas5.style.position = "absolute";
+	    canvas5.style.left = "50%";
+	    canvas5.style.top = "1170px";
+	    canvas6.style.position = "absolute";
+	    canvas6.style.left = "50%";
+	    canvas6.style.top = "1270px";
+	    ctx = canvas6.getContext("2d");
+	    
+	    canvas7 = document.getElementById("name8"); 
+	    canvas8 = document.getElementById("myChart8");
+	    canvas7.style.position = "absolute";
+	    canvas7.style.left = "50%";
+	    canvas7.style.top = "1670px";
+	    canvas8.style.position = "absolute";
+	    canvas8.style.left = "50%";
+	    canvas8.style.top = "1770px";
+	    ctx = canvas8.getContext("2d");
+	    
+	    canvas9 = document.getElementById("name10"); 
+	    canvas10 = document.getElementById("myChart10");
+	    canvas9.style.position = "absolute";
+	    canvas9.style.left = "50%";
+	    canvas9.style.top = "2170px";
+	    canvas10.style.position = "absolute";
+	    canvas10.style.left = "50%";
+	    canvas10.style.top = "2270px";
+	    ctx = canvas10.getContext("2d");
+	    draw();
+}
+function draw() {
+    ctx.style = "#000000";
+    ctx.rect( 0, 0, 100, 100 );
+    ctx.stroke();
+}
+window.onload = function() {
+    init();
+};
+</script>
+
+<script>
+    $.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("東伯")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name1').innerHTML=tn
+	    	var ctx = document.getElementById('myChart1').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	 $.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("鳥取本")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+      				zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name2').innerHTML=tn
+	    	var ctx = document.getElementById('myChart2').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	
+	 	 $.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("米子上福原")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+      				zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name3').innerHTML=tn
+	    	var ctx = document.getElementById('myChart3').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	$.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("倉吉")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+      				zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name4').innerHTML=tn
+	    	var ctx = document.getElementById('myChart4').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	
+	 	$.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("米子西町")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+      				zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name5').innerHTML=tn
+	    	var ctx = document.getElementById('myChart5').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	
+	 	$.get('http://localhost/hagiapi.php?target=uriage', {}, function(res){
+    	linecri("鳥取大覚寺")
+    	console.log(res)
+    	//res.data []([0]=新見とか[1]年度[2]月[3]合計)
+    	//各地方
+ 		function XX(name,time){
+ 		var count=0; 
+	   	var zr_array = []
+	   	var zn_array = []
+	   	var zh_array = []
+	    for(var i=0;i<res.data.length;i++){
+	    	if(count==1&&name!=res.data[i][0]){
+	    		break
+	    	}
+	    	if(name==res.data[i][0]){
+	   			if(res.data[i][1]=="2016"){
+      				zr_array.push(res.data[i][3])
+      			}else if(res.data[i][1]=="2017"){
+      				zn_array.push(res.data[i][3])
+      			}else{
+      				zh_array.push(res.data[i][3])
+      			}
+      			count=1;
+      		}
+	    }
+	    if(time=="2016"){
+	    	return zr_array
+	    }else if(time=="2017"){
+	    	return zn_array
+	    }else if(time=="2018"){
+	    	return zh_array
+		}
+	    }
+	    function linecri(tn){
+	    	document.getElementById('name6').innerHTML=tn
+	    	var ctx = document.getElementById('myChart6').getContext('2d');
+	    	var myChart = new Chart(ctx, {
+	    	    type: 'line',
+	    	    data:{
+	        	    labels:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+	        	    datasets: [{
+	        	        label: '2016売上',
+	        	        data:XX(tn,"2016"),
+            	        borderColor: "rgba(255,0,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     		    },{
+	     		    label: '2017売上',
+	        	        data:XX(tn,"2017"),
+                	    borderColor: "rgba(0,255,0,1)",
+          				backgroundColor: "rgba(0,0,0,0)"
+	     	    	},{
+	     	   		label: '2018売上',
+	            	    data:XX(tn,"2018"),
+                	    borderColor: "rgba(0,0,255,1)",
+          				backgroundColor: "rgba(0,0,0,0)" 
+	     	    	}]
+	       		},
+			options: {
+			    responsive: false,
+			}
+	 		}); 
+	 	}
+	 	})
+	 	
+      
+	 	
+</script>
+</body>
+</html>
